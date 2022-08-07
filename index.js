@@ -87,6 +87,7 @@ bot.on('callback_query', async (ctx) => {
 });
 
 quizBot.enter(async (ctx) => {
+  // start the game
   questionIndex = 0;
   const counter = 0;
   ctx.session.counter = counter;
@@ -100,6 +101,7 @@ quizBot.enter(async (ctx) => {
     is_anonymous: false,
   }).then((data) => {
     intervalId = setInterval(() => {
+      // start counting remaining time and write in into session
       ctx.session.time--;
       if (ctx.session.time === 0) {
         clearInterval(intervalId);
@@ -110,6 +112,7 @@ quizBot.enter(async (ctx) => {
 });
 
 quizBot.on('poll_answer', async (ctx) => {
+  // restart remaining time and write in into session
   clearInterval(intervalId);
   questionIndex = ++ctx.session.questionIndex;
   const result = questions[questionIndex - 1].answer === ctx.pollAnswer.option_ids[0];
